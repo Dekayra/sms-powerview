@@ -1,0 +1,24 @@
+# Normalize line endings to LF everywhere, regardless of platform. Without
+# this, a Windows checkout can convert entrypoint.sh to CRLF, which breaks
+# its shebang line inside the Linux container ("bad interpreter" / silent
+# no-op).
+* text=auto eol=lf
+
+*.sh text eol=lf
+*.py text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.md text eol=lf
+*.example text eol=lf
+Dockerfile text eol=lf
+.gitignore text eol=lf
+.gitattributes text eol=lf
+
+# Never touch binaries.
+*.gz binary
+*.zip binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary

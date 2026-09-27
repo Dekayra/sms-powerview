@@ -1,0 +1,22 @@
+# Runtime state
+data/
+*.env
+.env
+!/.env.example
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Node
+node_modules/
+frontend/dist/
+
+# Misc
+*.log
+.DS_Store
+
+# Sandbox/editor environment config, not part of this project
+.devcontainer/

@@ -1,0 +1,46 @@
+# You only need this if MQTT_HOST is left blank in .env. With MQTT
+# configured, entities for the nobreak show up automatically via MQTT
+# discovery and no YAML is required.
+#
+# Replace <host> with the IP/hostname of the machine running the container.
+
+rest:
+  - resource: http://<host>:5000/monitor
+    scan_interval: 15
+    sensor:
+      - name: "UPS Input Voltage"
+        value_template: "{{ value_json.status.input_voltage.current }}"
+        unit_of_measurement: "V"
+        device_class: voltage
+        state_class: measurement
+      - name: "UPS Output Voltage"
+        value_template: "{{ value_json.status.output_voltage.current }}"
+        unit_of_measurement: "V"
+        device_class: voltage
+        state_class: measurement
+      - name: "UPS Output Frequency"
+        value_template: "{{ value_json.status.output_frequency.current }}"
+        unit_of_measurement: "Hz"
+        device_class: frequency
+        state_class: measurement
+      - name: "UPS Battery Charge"
+        value_template: "{{ value_json.status.battery_charge.current }}"
+        unit_of_measurement: "%"
+        device_class: battery
+        state_class: measurement
+      - name: "UPS Output Power"
+        value_template: "{{ value_json.status.output_power.current }}"
+        unit_of_measurement: "W"
+        device_class: power
+        state_class: measurement
+      - name: "UPS Temperature"
+        value_template: "{{ value_json.status.temperature.current }}"
+        unit_of_measurement: "°C"
+        device_class: temperature
+        state_class: measurement
+      - name: "UPS Running On Battery"
+        value_template: "{{ value_json.info.battery_in_use }}"
+      - name: "UPS Self-test Active"
+        value_template: "{{ value_json.info.self_test_active }}"
+      - name: "UPS Battery Low"
+        value_template: "{{ value_json.info.battery_low }}"

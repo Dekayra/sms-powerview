@@ -1,0 +1,39 @@
+services:
+  powerview:
+    # Pure Python, no native extensions - targets arm64 natively, no
+    # cross-compat tricks needed; also buildable for other architectures
+    # (e.g. amd64) if you need that instead.
+    platform: "linux/arm64"
+    build:
+      context: .
+      dockerfile: Dockerfile
+      platforms:
+        - "linux/arm64"
+    image: sms-powerview:latest
+    container_name: sms-powerview
+    restart: unless-stopped
+    ports:
+      - "${JSON_PORT:-5000}:5000"
+    environment:
+      - DEVICE_PATH=${DEVICE_PATH:-/dev/ttyUSB0}
+      - BAUD_RATE=${BAUD_RATE:-2400}
+      - POLL_INTERVAL=${POLL_INTERVAL:-15}
+      # Web UI login (see README "Web UI"). Leave WEB_PASSWORD blank to
+      # disable login entirely - fine on a trusted LAN, open otherwise.
+      - WEB_PASSWORD=${WEB_PASSWORD:-}
+      - JWT_SECRET=${JWT_SECRET:-}
+      - JWT_EXPIRY_HOURS=${JWT_EXPIRY_HOURS:-24}
+      - MQTT_HOST=${MQTT_HOST:-}
+      - MQTT_PORT=${MQTT_PORT:-1883}
+      - MQTT_USERNAME=${MQTT_USERNAME:-}
+      - MQTT_PASSWORD=${MQTT_PASSWORD:-}
+      - MQTT_DISCOVERY_PREFIX=${MQTT_DISCOVERY_PREFIX:-homeassistant}
+      - MQTT_BASE_TOPIC=${MQTT_BASE_TOPIC:-sms_powerview}
+      - DEVICE_NAME=${DEVICE_NAME:-SMS Nobreak}
+      - DEVICE_ID=${DEVICE_ID:-sms_powerview_ups}
+      - DATA_DIR=/data
+    volumes:
+      - ./data:/data
+    devices:
+      - "${DEVICE_PATH:-/dev/ttyUSB0}:${DEVICE_PATH:-/dev/ttyUSB0}"
+    mem_limit: 300m
